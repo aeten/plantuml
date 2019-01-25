@@ -45,7 +45,7 @@ public class SuggestedFile {
 
 	private SuggestedFile(File outputFile, FileFormat fileFormat, int initialCpt) {
 		if (outputFile.getName().endsWith(fileFormat.getFileSuffix())) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(outputFile.getName() + " hasn't extension " + fileFormat.getFileSuffix());
 		}
 		this.outputFile = outputFile;
 		this.fileFormat = fileFormat;
