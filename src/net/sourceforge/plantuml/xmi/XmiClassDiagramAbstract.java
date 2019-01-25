@@ -188,6 +188,7 @@ abstract class XmiClassDiagramAbstract implements IXmiClassDiagram {
 			final Element attribute = document.createElement("UML:Attribute");
 			attribute.setAttribute("xmi.id", "att" + UniqueSequence.getValue());
 			attribute.setAttribute("name", m.getDisplay(false));
+			attribute.setAttribute("ownerScope", m.isStatic() ? "classifier": "instance");
 			final VisibilityModifier visibility = m.getVisibilityModifier();
 			if (visibility != null) {
 				attribute.setAttribute("visibility", visibility.getXmiVisibility());
@@ -204,6 +205,7 @@ abstract class XmiClassDiagramAbstract implements IXmiClassDiagram {
 			final Element operation = document.createElement("UML:Operation");
 			operation.setAttribute("xmi.id", "att" + UniqueSequence.getValue());
 			operation.setAttribute("name", m.getDisplay(false));
+			operation.setAttribute("ownerScope", m.isStatic() ? "classifier": "instance");
 			final VisibilityModifier visibility = m.getVisibilityModifier();
 			if (visibility != null) {
 				operation.setAttribute("visibility", visibility.getXmiVisibility());
