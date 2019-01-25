@@ -54,6 +54,7 @@ import javax.xml.transform.stream.StreamResult;
 import net.sourceforge.plantuml.classdiagram.ClassDiagram;
 import net.sourceforge.plantuml.cucadiagram.Display;
 import net.sourceforge.plantuml.cucadiagram.IEntity;
+import net.sourceforge.plantuml.cucadiagram.ILeaf;
 import net.sourceforge.plantuml.cucadiagram.LeafType;
 import net.sourceforge.plantuml.cucadiagram.Member;
 import net.sourceforge.plantuml.cucadiagram.Stereotype;
@@ -175,6 +176,39 @@ abstract class XmiClassDiagramAbstract implements IXmiClassDiagram {
 			cla.setAttribute("isAbstract", "true");
 		} else if (type == LeafType.INTERFACE) {
 			cla.setAttribute("isInterface", "true");
+		}
+
+		if (entity instanceof ILeaf) {
+			final ILeaf leaf = (ILeaf)entity;
+			if (leaf.getGeneric() != null) {
+				final Element modelTemplateParameter = document.createElement("UML:ModelElement.templateParameter");
+				for (String param: leaf.getGeneric().split(",")) {
+					final String[] generic = param.split(" ");
+					if ((generic.length != 1) && (generic.length != 3)) {
+						// TODO Throw error in the PlantUML way
+						throw(new Error("Invalid parameterized type " + param));
+					}
+					final Element templateParameter = document.createElement("UML:TemplateParameter");
+					final Element templateParameterParameter = document.createElement("UML:TemplateParameter.parameter");
+					final Element parameter= document.createElement("UML:Parameter");
+					final Element parameterType = document.createElement("UML:Parameter.type");
+					final Element dataType = document.createElement("UML:DataType");
+
+					templateParameter.setAttribute("xmi.id", "tplt" + UniqueSequence.getValue());
+					parameter.setAttribute("xmi.id", "param" + UniqueSequence.getValue());
+					parameter.setAttribute("name", generic[0]);
+					parameter.setAttribute("isSpecification", "false");
+					dataType.setAttribute("xmi.id", "type" + UniqueSequence.getValue());
+					dataType.setAttribute("name", (generic.length == 1)? "void": generic[2]);
+
+					parameterType.appendChild(dataType);
+					parameter.appendChild(parameterType);
+					templateParameterParameter.appendChild(parameter);
+					templateParameter.appendChild(templateParameterParameter);
+					modelTemplateParameter.appendChild(templateParameter);
+				}
+				cla.appendChild(modelTemplateParameter);
+			}
 		}
 
 		final Element feature = document.createElement("UML:Classifier.feature");
