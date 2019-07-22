@@ -215,6 +215,7 @@ abstract class XmiClassDiagramAbstract implements IXmiClassDiagram {
 		cla.appendChild(feature);
 
 		for (Member m : entity.getBodier().getFieldsToDisplay()) {
+			if (m.getDisplay(false).trim().length() == 0) continue;
 			// <UML:Attribute xmi.id="UMLAttribute.6" name="Attribute1"
 			// visibility="public" isSpecification="false"
 			// ownerScope="instance" changeability="changeable"
@@ -231,6 +232,7 @@ abstract class XmiClassDiagramAbstract implements IXmiClassDiagram {
 		}
 
 		for (Member m : entity.getBodier().getMethodsToDisplay()) {
+			if (m.getDisplay(false).trim().length() == 0) continue;
 			// <UML:Operation xmi.id="UMLOperation.7" name="Operation1"
 			// visibility="public" isSpecification="false"
 			// ownerScope="instance" isQuery="false" concurrency="sequential"
