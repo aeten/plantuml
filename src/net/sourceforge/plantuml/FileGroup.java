@@ -87,7 +87,7 @@ public class FileGroup {
 		final File f = new File(pattern);
 		if (f.isDirectory()) {
 			addSimpleDirectory(f);
-		} else if (f.isFile()) {
+		} else if (f.exists()) { // exists() instead of isFile() allowing pipe
 			addResultFile(f);
 		}
 	}
